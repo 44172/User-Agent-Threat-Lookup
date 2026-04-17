@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>User Agent Threat Lookup</title></head>
+<body>
+    <h1>User Agent Threat Lookup</h1>
+    {% if error %}
+        <p style="color:red">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+        <textarea name="user_agent" rows="4" cols="80" placeholder="Enter User Agent string"></textarea><br>
+        <input type="submit" value="Check Threat">
+    </form>
+    {% if summary %}
+        <h2>Result</h2>
+        <p><strong>User Agent:</strong> {{ user_agent }}</p>
+        <p><strong>Summary:</strong> {{ summary }}</p>
+        <p><strong>Threat Score:</strong> {{ score }}%</p>
+    {% endif %}
+	<!-- Add this section to your result display -->
+	{% if matches %}
+		<h3>Detailed Matches</h3>
+		<table border="1">
+			<tr><th>Source</th><th>Matched Pattern</th><th>Confidence</th></tr>
+			{% for m in matches %}
+			<tr><td>{{ m.source }}</td><td>{{ m.pattern }}</td><td>{{ m.confidence }}</td></tr>
+			{% endfor %}
+		</table>
+		<h3>Debug Output</h3>
+		<pre>{{ matches|tojson(indent=2) }}</pre>
+	{% endif %}   
+</body>
+</html>   
